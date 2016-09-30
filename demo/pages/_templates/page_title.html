@@ -1,0 +1,21 @@
+<div class="demo-toolbar" layout="row" layout-align="start center" flex>
+
+    <md-icon ng-if="page.icon" md-svg-src="material-design:{{page.icon}}" style="color: white; width:40px; height:40px"></md-icon>
+
+    <h1>{{page.title}}</h1>
+
+    <span flex></span>
+
+    <md-button class="md-icon-button" ng-click="showCode()" aria-label="Clear" ng-if="page.haveCodeSource">
+        <md-icon md-svg-src="material-design:code" style="color: white; width:30px; height:30px" ng-if="!displayCode"></md-icon>
+        <md-icon md-svg-src="material-design:visibility" style="color: white; width:30px; height:30px" ng-if="displayCode"></md-icon>
+        <md-tooltip ng-if="!displayCode">code source</md-tooltip>
+        <md-tooltip ng-if="displayCode">consulter le resultat</md-tooltip>
+    </md-button>
+
+    <md-button aria-label="Display Code" ng-if="fullScreenMode" ng-click="fullScreen()" ng-class="{'btnActive':hideParams}" class="md-icon-button">
+        <md-icon md-svg-src="material-design:page_first" style="color: white; width:30px; height:30px" ng-show="hideParams"></md-icon>
+        <md-icon md-svg-src="material-design:page_last" style="color: white; width:30px; height:30px" ng-show="!hideParams"></md-icon>
+    </md-button>
+
+</div>

@@ -1,0 +1,79 @@
+<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="right">
+    <md-toolbar class="md-theme-light demo-bg-color">
+        <h1 class="md-toolbar-tools">
+            <md-icon md-svg-src="material-design:menu"></md-icon>
+            <span>STARTER PACK 2.1</span>
+            <div flex></div>
+        </h1>
+    </md-toolbar>
+
+    <md-content layout-padding layout="column">
+
+        <md-list class="demo-sidenav">
+
+            <md-list-item ng-click="goTo('default')">
+                <md-icon md-svg-src="material-design:home"></md-icon>
+                <span>HOME</span>
+                <span flex></span>
+            </md-list-item>
+
+        </md-list>
+
+        <md-divider></md-divider>
+
+        <md-list class="demo-sidenav" ng-repeat="page in pages">
+
+            <h2 class="title" ng-if="page.isTitle">
+                <md-icon md-svg-src="material-design:{{page.icon}}" class="ic_18px"></md-icon>
+                {{page.name}}
+            </h2>
+
+            <md-list-item ng-click="goTo(page.state)" ng-if="!page.isTitle">
+                <md-icon md-svg-src="material-design:{{page.icon}}"></md-icon>
+                <span>{{page.name}}</span>
+                <span flex></span>
+            </md-list-item>
+
+            <div  ng-repeat="subPage in page.subPages">
+
+                <md-list-item ng-click="subPage.subPages ? subPage.isOpen = !subPage.isOpen : goTo(subPage.state)">
+
+                    <md-icon md-svg-src="material-design:minus"          ng-if="!subPage.subPages" class="ic_18px"></md-icon>
+                    <md-icon md-svg-src="material-design:arrow_right"   ng-if="!subPage.isOpen && subPage.subPages" class="ic_18px"></md-icon>
+                    <md-icon md-svg-src="material-design:arrow_down"    ng-if="subPage.isOpen && subPage.subPages" class="ic_18px"></md-icon>
+
+                    <span>{{subPage.name}}</span>
+
+                    <span flex></span>
+
+                </md-list-item>
+
+                <md-list-item ng-if="subPage.subPages" ng-repeat="cat in subPage.subPages" ng-show="subPage.isOpen" ng-click="subPage.isOpen = false;goTo(cat.state)">
+                    <span flex="5"></span>
+                    <md-icon md-svg-src="material-design:minus" class="demo-font ic_16px"></md-icon>
+                    {{cat.name}}
+                    <span flex></span>
+                </md-list-item>
+
+            </div>
+
+        </md-list>
+
+        <md-divider></md-divider>
+
+        <div layout="row">
+            <md-button ng-click="close()" class="demo-font" arial-label="close sidenav">
+                <md-icon md-svg-src="material-design:remove"class="demo-font"></md-icon>
+                <span>close</span>
+                <span flex></span>
+            </md-button>
+
+            <md-button href="https://github.com/Kiwouz/eklabs.angularStarterPack" target="_blank" class="demo-font"  arial-label="close sidenav">
+                <md-icon md-svg-src="material-design:widget" class="demo-font"></md-icon>
+                <span>Dev Portal</span>
+                <span flex></span>
+            </md-button>
+        </div>
+
+    </md-content>
+</md-sidenav>

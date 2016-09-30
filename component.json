@@ -1,0 +1,12 @@
+{
+  "name": "eklabs.angularStarterPack",
+
+  "version": "0.2.3",
+
+  "description": "Starter Pack",
+
+  "main": "release/eklabs.angualarStarterPack.min.js",
+
+  "license": "MIT",
+  "repo": "Kiwouz/eklabs.angualarStarterPack"
+}

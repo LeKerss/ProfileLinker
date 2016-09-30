@@ -1,0 +1,46 @@
+<md-list layout-align="start start" ng-repeat="page in pages">
+
+
+    <h2 class="title" ng-if="page.isTitle">
+        <md-icon md-svg-src="material-design:{{page.icon}}"></md-icon>
+        {{page.name}}
+    </h2>
+
+    <md-list-item ui-sref="{{page.state ? page.state : 'default'}}" ng-if="!page.isTitle">
+        <md-icon md-svg-src="material-design:{{page.icon}}"></md-icon>
+        <span>{{page.name}}</span>
+        <em class="homeList">{{page.description}}</em>
+        <span flex></span>
+        <team-dev-avatar teammate="teamDev" ng-repeat="teamDev in page.teammate"></team-dev-avatar>
+    </md-list-item>
+
+
+    <div ng-repeat="subPage in page.subPages">
+
+        <md-list-item ng-click="subPage.subPages ? subPage.isOpen = !subPage.isOpen : goTo(subPage.state)">
+
+            <md-icon md-svg-src="material-design:minus"             ng-if="!subPage.subPages && !subPage.icon"  class="ic_18px"></md-icon>
+            <md-icon md-svg-src="material-design:{{subPage.icon}}"  ng-if="!subPage.subPages && subPage.icon"  class="ic_18px"></md-icon>
+            <md-icon md-svg-src="material-design:arrow_right"       ng-if="!subPage.isOpen && subPage.subPages" class="ic_18px"></md-icon>
+            <md-icon md-svg-src="material-design:arrow_down"        ng-if="subPage.isOpen && subPage.subPages"  class="ic_18px"></md-icon>
+
+            <span>{{subPage.name}}</span>
+            <em class="homeList">{{subPage.description}}</em>
+
+            <span flex></span>
+
+            <team-dev-avatar teammate="teamDev" ng-repeat="teamDev in subPage.teammate"></team-dev-avatar>
+        </md-list-item>
+
+        <md-list-item ng-if="subPage.subPages" ng-repeat="cat in subPage.subPages" ng-show="subPage.isOpen" ng-click="subPage.isOpen = false;goTo(cat.state)">
+            <span flex="5"></span>
+            <md-icon md-svg-src="material-design:minus" class="gray-font ic_16px"></md-icon>
+            <span>{{cat.name}}</span>
+            <em class="homeList">{{cat.description}}</em>
+            <span flex></span>
+            <team-dev-avatar teammate="teamDev" ng-repeat="teamDev in cat.teammate" style="opacity: 0.6"></team-dev-avatar>
+        </md-list-item>
+        <md-divider ng-show="subPage.isOpen"></md-divider>
+    </div>
+
+</md-list>
