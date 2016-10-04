@@ -9,5 +9,11 @@
   "description" : "Example how to use a form",
   "icon"        : "bug_report",
   "state"       : "myForm"
-}
+},
+  {
+    "name"        : "TTC ProfileLinker",
+    "description" : "Composant du groupe TTC par Annas & Cecile",
+    "icon"        : "local_florist",
+    "state"       : "ttcLinker"
+  }
 ]

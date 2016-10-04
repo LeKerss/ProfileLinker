@@ -2,5 +2,6 @@
 
 angular.module('eklabs.angularStarterPack',[
     'eklabs.angularStarterPack.jsonEditor',
-    'eklabs.angularStarterPack.forms'
+    'eklabs.angularStarterPack.forms',
+    'eklabs.angularStarterPack.ttc-linker'
 ]);

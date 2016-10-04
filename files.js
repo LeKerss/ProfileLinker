@@ -8,6 +8,8 @@ modelFiles = {
         'src/modules/forms/module.js',
         'src/modules/forms/{,**/}*.js',
 
+        'src/modules/ttc-linker/module.js',
+        'src/modules/ttc-linker/{,**/}*.js',
 
         'src/module.js',
         'src/services/{,**/}*.js'

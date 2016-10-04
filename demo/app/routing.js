@@ -28,6 +28,12 @@ angular.module('demoApp')
             templateUrl : "pages/demoform/demoFormView.html"
         })
 
+        .state('ttcLinker', {
+            url : '/ttc-linker',
+            controller : 'linkerCtrl',
+            templateUrl : 'pages/linker/linkerView.html'
+        })
+
 
     ;
 
