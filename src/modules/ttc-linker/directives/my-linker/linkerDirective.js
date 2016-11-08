@@ -41,6 +41,25 @@ angular.module('eklabs.angularStarterPack.forms')
                     }
                 });
 
+                scope.maListe = [
+                    {
+                        name : "Cécile Hu",
+                        photo:"",
+                        status : "1"
+                    },
+                    {
+                        name : "Annas Saker",
+                        photo:"",
+                        status : "1"
+                    },
+                    {
+                        name : "Ludo Babadjo",
+                        photo:"",
+                        status : "0"
+                    },
+
+                ];
+
             }
         }
     });
