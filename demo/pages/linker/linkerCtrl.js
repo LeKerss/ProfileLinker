@@ -3,41 +3,67 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('linkerCtrl', function($scope,$mdDialog){
+    .controller('linkerCtrl', function($log,$scope,$mdDialog){
 
 
         // ----------------------------------------------------------------------------------------------------
         // ---- PARAMS CATALOGUE
         // ----------------------------------------------------------------------------------------------------
+        // Fonction permettant de récupérer un utilisateur via son id
 
-        $scope.params = [{
-            /**
-             * Default
-             */
-            case        : 'Default Case',
-            user        : undefined,
-            callback    : undefined
-        },{
-            /**
-             * Case user
-             */
-            case       : 'Case user',
-            user    : {
-                firstname : 'toto',
-                lastname : 'plop',
-                titi : "pocvc"
-            },
-            callback : {
-                onValid : function(user){
-                    displayCode('onValid', user)
-                }
-            }
-        }];
+
+
+
+
+      $scope.params = [{
+          /**
+           * Default
+           */
+          case        : 'Default Case',
+          user        : undefined,
+          callback    : undefined
+      },{
+          /**
+           * Case user
+           */
+          case       : 'Case Annas',
+          user    : 1,
+          callback : {
+              onValid : function(user){
+                  displayCode('onValid', user)
+              }
+          }
+      },
+      {
+          /**
+           * Case user
+           */
+          case       : 'Case Cecile',
+          user    : 2,
+          callback : {
+              onValid : function(user){
+                  displayCode('onValid', user)
+              }
+          }
+      },
+      {
+          /**
+           * Case user
+           */
+          case       : 'Case Ludo',
+          user    : 3,
+          callback : {
+              onValid : function(user){
+                  displayCode('onValid', user)
+              }
+          }
+      }
+      ];
 
         $scope.chooseParams = function(index){
             // --- Define current status
             $scope.myUser    = $scope.params[index].user;
-            $scope.myCallback = $scope.params[index].callback;
+            $scope.myCallback = $scope.params[index].callback
 
             $scope.index          = index;
             $scope.refresh        = moment().valueOf();

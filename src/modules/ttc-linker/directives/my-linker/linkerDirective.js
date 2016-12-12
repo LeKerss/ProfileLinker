@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('eklabs.angularStarterPack.forms')
-    .directive('myProfileLinker',function($log){
+    .directive('myProfileLinker',function($log, $http){
         return {
             templateUrl : 'eklabs.angularStarterPack/modules/ttc-linker/directives/my-linker/linkerView.html',
             scope : {
@@ -12,12 +12,68 @@ angular.module('eklabs.angularStarterPack.forms')
                 callback    : '=?'
             },link : function(scope){
 
+              //TODO : remplacer par appel ajax
+              scope.userList = [
+                {
+                    id      :  1,
+                    name    : "Annas Saker",
+                    photo   : "http://2.bp.blogspot.com/-bQKvDrSnBHA/VKHJT_vNXiI/AAAAAAAASfk/MIP0_2Ln1Ns/s1600/Photos-petit-chat-blanc-0.jpg",
+                    friends : [
+                      2,
+                      3
+                    ],
+                    status  : 1
+                },
+                {
+                    id      : 2,
+                    name    : "Cecile Hu",
+                    photo   : "https://cdn.pixabay.com/photo/2016/03/04/22/54/panda-1236875_960_720.jpg",
+                    friends : [
+                      1
+                    ],
+                    status  : 0
+                },
+                {
+                    id      : 3,
+                    name    : "Ludo Babadjo",
+                    photo   : "http://www.jdubuzz.com/files/2015/07/bonjour-peuple-mexicain_54k7r_25yo9p.jpg",
+                    friends : [
+                      1
+                    ],
+                    status  : 1
+                }
+              ];
+
                 /**
                  *
                  */
-                scope.$watch('user', function(myUser){
-                    scope.myUser = myUser;
+                scope.$watch('user', function(myUserId) {
+                  if (!(typeof myUserId === 'number')) {
+                    return;
+                  }
+                    scope.myUser = scope.findUser(myUserId);
+                    scope.myFriends = scope.getFriends(myUserId);
                 });
+
+                // Fonction permettant de récupérer un utilisateur via son id
+                scope.findUser = function(id) {
+                  return scope.userList.find(function(user) {
+                    return user.id === id;
+                  });
+                };
+
+                scope.getFriends = function(userId) {
+
+                  //TODO ajax
+                  // $http.get()
+                  return scope.findUser(userId).friends.map(function(id) {
+                      return scope.findUser(id);
+                    }
+                  )
+
+                }
+
+
 
 
                 /**
@@ -28,6 +84,7 @@ angular.module('eklabs.angularStarterPack.forms')
                     onValid : function(user){
                         $log.info('my user is : ',user)
                     }
+
                 };
 
                 /**
