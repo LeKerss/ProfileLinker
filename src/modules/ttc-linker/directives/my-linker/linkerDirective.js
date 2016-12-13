@@ -48,14 +48,16 @@ angular.module('eklabs.angularStarterPack.forms')
                  *
                  */
                 scope.$watch('user', function(myUserId) {
-                  if (!(typeof myUserId === 'number')) {
-                    return;
-                  }
-                    if (myUserId === undefined){
+                    if (myUserId === undefined) {
                         scope.isLogged = false;
+                        scope.userObject = undefined;
+                        scope.userFriends = [];
+                    } else {
+                        scope.userObject = scope.findUser(myUserId);
+                        scope.userFriends = scope.getFriends(myUserId);
+                        scope.isLogged = true;
                     }
-                    scope.myUser = scope.findUser(myUserId);
-                    scope.myFriends = scope.getFriends(myUserId);
+
                 });
 
                 // Fonction permettant de récupérer un utilisateur via son id
