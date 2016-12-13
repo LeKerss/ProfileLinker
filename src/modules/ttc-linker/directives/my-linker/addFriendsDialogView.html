@@ -9,7 +9,7 @@
       </div>
     </md-toolbar>
     <md-dialog-content style="max-width:800px;max-height:810px;">
-    <form>
+    <form  ng-submit="addFriend()">
       <div flex="100" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill>
 
       <md-input-container flex>
@@ -19,23 +19,23 @@
 
           <md-list style="height: 90%; overflow: auto">
 
-              <md-list-item class="md-3-line" ng-click="null" ng-repeat="person in myFriends">
-
+              <md-list-item ng-click="addFriend(person)" class="md-3-line" ng-click="null" ng-repeat="person in people | filter: input">
+                <!-- <div ng-if="isFilter()"> -->
                   <img ng-if="person.photo" ng-src="{{person.photo}}" class="md-avatar" alt="{{person.name}}" />
                   <img ng-if="!person.photo" ng-src="" class="md-avatar" alt="Default" />
 
                   <div class="md-list-item-text" layout="column">
                       <h3>{{person.name}}</h3>
-                      <!--<h4 class="subText">{{title | textLimit : 30}}</h4>-->
                   </div>
                   <div class ="md-list-item-status" layout="column">
-                      <md-icon md-svg-src="material-design:account_circle" ng-if="person.status=='1'" aria-label="android" style="color : #00ec4b"></md-icon>
-                      <md-icon md-svg-src="material-design:account_circle" ng-if="person.status=='0'" aria-label="android" style="color : #a8a8a8"></md-icon>
-                      <icon src = "dskdskldj/nfdknfd/fdjskf" alt = "bonjour" />
+                      <md-button class="md-icon-button" >
+                        <md-icon md-svg-src="material-design:add" aria-label="ajouter" style="color : green"></md-icon>
+                      </md-button>
+                      <icon src = "dskdskldj/nfdknfd/fdjskf" alt = "bonjour"/>
                   </div>
 
               </md-list-item>
-
+            <!-- </div> -->
           </md-list>
 
           <div flex></div>

@@ -134,18 +134,34 @@ angular.module('eklabs.angularStarterPack.forms')
                 }
 
                 function AddFriendsDialogController(scope, $mdDialog){
-                    // scope.hide = function() {
-                    //   $mdDialog.hide();
-                    // };
-                    //
-                    // scope.cancel = function() {
-                    //   $mdDialog.cancel();
-                    // };
-                    //
-                    // scope.friendAdded = function(newFriend) {
-                    //   $mdDialog.hide(newFriend);
-                    // };
-                };
+
+                  scope.addFriend= function (person) {
+                    console.log(person)
+                  }
+
+                  scope.people = [];
+                  $http({
+                    method: "GET",
+                    url: "http://91.134.241.60:3080/resources/users",
+                  }).then(function successCallback(response){
+                    console.log(response)
+                    scope.people = response.data;
+                  }, function errorCallback(response){
+                    console.log(response);
+                  });
+
+                  scope.hide = function() {
+                    $mdDialog.hide();
+                  };
+
+                  scope.cancel = function() {
+                    $mdDialog.cancel();
+                  };
+
+                  scope.friendAdded = function(newFriend) {
+                    $mdDialog.hide(newFriend);
+                  };
+              };
 
             }
         }
