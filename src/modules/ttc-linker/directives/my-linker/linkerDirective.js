@@ -4,16 +4,17 @@
 'use strict';
 
 angular.module('eklabs.angularStarterPack.forms')
-    .directive('myProfileLinker',function($log, $http, $mdDialog){
+    .directive('myProfileLinker',function($log, $http, $mdDialog, $q){
         return {
           templateUrl : 'eklabs.angularStarterPack/modules/ttc-linker/directives/my-linker/linkerView.html',
             scope : {
                 user        : '=',
                 callback    : '=?'
             },link : function(scope){
+                var userRoute="http://91.134.241.60:3080/resources/users/";
 
               //TODO : remplacer par appel ajax
-              scope.userList = [
+              /*scope.userList = [
                 {
                     id      :  1,
                     name    : "Annas Saker",
@@ -42,24 +43,50 @@ angular.module('eklabs.angularStarterPack.forms')
                     ],
                     status  : 1
                 }
-              ];
+              ];*/
 
                 /**
                  *
                  */
                 scope.$watch('user', function(myUserId) {
-                  if (!(typeof myUserId === 'number')) {
-                    return;
-                  }
-                    scope.myUser = scope.findUser(myUserId);
-                    scope.myFriends = scope.getFriends(myUserId);
+                    if (myUserId === undefined) {
+                        resetUser();
+                    } else {
+                        scope.findUser(myUserId).then(
+                            // si id de l'utilisateur trouvé
+                            function (result) {
+                                scope.userObject=result.data;
+                                var friendsPromises = scope.userObject.friends.map(function (friendId) {
+                                    return scope.findUser(friendId);
+                                });
+                                $q.all(friendsPromises).then (function (results) {
+                                    scope.userFriends = results.map(function (result) {
+                                        return result.data;
+                                    });
+                                    scope.isLogged = true;
+                                });
+                            },
+                            // si id de l'utilisateur non trouvé
+                            function (error) {
+                                $log.error("Erreur de récupération de l'utilisteur", error);
+                                resetUser();
+                            });
+                    }
+
                 });
+
+                function resetUser() {
+                    scope.isLogged = false;
+                    scope.userObject = undefined;
+                    scope.userFriends = [];
+                }
 
                 // Fonction permettant de récupérer un utilisateur via son id
                 scope.findUser = function(id) {
-                  return scope.userList.find(function(user) {
+                    return $http.get(userRoute+id);
+                  /*return scope.userList.find(function(user) {
                     return user.id === id;
-                  });
+                  });*/
                 };
 
                 scope.getFriends = function(userId) {
