@@ -116,7 +116,7 @@ angular.module('eklabs.angularStarterPack.forms')
                     },
 
                 ];
-
+                console.log("mon id est le suivant :", scope.myUser.id);
                 scope.toggleAddFriends = function(ev) {
                     $mdDialog.show({
                       controller : AddFriendsDialogController,
@@ -124,7 +124,10 @@ angular.module('eklabs.angularStarterPack.forms')
                       parent      : angular.element(document.body),
                       targetEvent : ev,
                       clickOutsideToClose:true,
-                      fullscreen : scope.customFullscreen
+                      fullscreen : scope.customFullscreen,
+                      locals: {
+                        myUserId: scope.myUserId
+                      }
                     })
                     .then(function(newFriend){
 
@@ -133,11 +136,26 @@ angular.module('eklabs.angularStarterPack.forms')
                     });
                 }
 
-                function AddFriendsDialogController(scope, $mdDialog){
+                function AddFriendsDialogController(scope, $mdDialog, myUserId){
 
-                  scope.addFriend= function (person) {
-                    console.log(person)
-                  }
+                  scope.addFriend = function (person) {
+                    var updatedPerson = person;
+                    if(!updatedPerson.requests){
+                      updatedPerson.requests = [];
+                    }
+                    console.log(myUserId)
+                    updatedPerson.requests.push(myUserId);
+
+                    $http({
+                      method: "PUT",
+                      url:  "http://91.134.241.60:3080/resources/users/" + person.id,
+                      data: updatedPerson
+                    })
+                    .then(
+                      function (response) {},
+                      function (response) {console.log(response);}
+                    )
+                  };
 
                   scope.people = [];
                   $http({
