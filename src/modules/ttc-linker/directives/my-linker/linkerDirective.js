@@ -4,9 +4,9 @@
 'use strict';
 
 angular.module('eklabs.angularStarterPack.forms')
-    .directive('myProfileLinker',function($log, $http){
+    .directive('myProfileLinker',function($log, $http, $mdDialog){
         return {
-            templateUrl : 'eklabs.angularStarterPack/modules/ttc-linker/directives/my-linker/linkerView.html',
+          templateUrl : 'eklabs.angularStarterPack/modules/ttc-linker/directives/my-linker/linkerView.html',
             scope : {
                 user        : '=',
                 callback    : '=?'
@@ -116,6 +116,36 @@ angular.module('eklabs.angularStarterPack.forms')
                     },
 
                 ];
+
+                scope.toggleAddFriends = function(ev) {
+                    $mdDialog.show({
+                      controller : AddFriendsDialogController,
+                      templateUrl: "eklabs.angularStarterPack/modules/ttc-linker/directives/my-linker/addFriendsDialogView.html",
+                      parent      : angular.element(document.body),
+                      targetEvent : ev,
+                      clickOutsideToClose:true,
+                      fullscreen : scope.customFullscreen
+                    })
+                    .then(function(newFriend){
+
+                    }, function(){
+
+                    });
+                }
+
+                function AddFriendsDialogController(scope, $mdDialog){
+                    // scope.hide = function() {
+                    //   $mdDialog.hide();
+                    // };
+                    //
+                    // scope.cancel = function() {
+                    //   $mdDialog.cancel();
+                    // };
+                    //
+                    // scope.friendAdded = function(newFriend) {
+                    //   $mdDialog.hide(newFriend);
+                    // };
+                };
 
             }
         }

@@ -1,0 +1,46 @@
+<md-dialog aria-label="Ajouter un Ami">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Ajouter un ami</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-clck="cancel()">
+          <md-icon md-svg-src="material-design:close" aria-label="Fermer"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:800px;max-height:810px;">
+    <form>
+      <div flex="100" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill>
+
+      <md-input-container flex>
+          <label>Recherche</label>
+          <input ng-model="input">
+      </md-input-container>
+
+          <md-list style="height: 90%; overflow: auto">
+
+              <md-list-item class="md-3-line" ng-click="null" ng-repeat="person in myFriends">
+
+                  <img ng-if="person.photo" ng-src="{{person.photo}}" class="md-avatar" alt="{{person.name}}" />
+                  <img ng-if="!person.photo" ng-src="" class="md-avatar" alt="Default" />
+
+                  <div class="md-list-item-text" layout="column">
+                      <h3>{{person.name}}</h3>
+                      <!--<h4 class="subText">{{title | textLimit : 30}}</h4>-->
+                  </div>
+                  <div class ="md-list-item-status" layout="column">
+                      <md-icon md-svg-src="material-design:account_circle" ng-if="person.status=='1'" aria-label="android" style="color : #00ec4b"></md-icon>
+                      <md-icon md-svg-src="material-design:account_circle" ng-if="person.status=='0'" aria-label="android" style="color : #a8a8a8"></md-icon>
+                      <icon src = "dskdskldj/nfdknfd/fdjskf" alt = "bonjour" />
+                  </div>
+
+              </md-list-item>
+
+          </md-list>
+
+          <div flex></div>
+
+      </div>
+    </form>
+  </md-dialog-content>
+</md-Dialog>
