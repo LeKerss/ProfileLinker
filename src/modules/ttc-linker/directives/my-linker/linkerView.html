@@ -43,10 +43,11 @@
         </div>
 
 
-        <md-button type="submit">
-            <md-icon md-svg-src="material-design:done"></md-icon>
-            Valider
-        </md-button>
+        <div layout="row" layout-align="start center">
+            <md-button type="submit"><md-icon md-svg-src="material-design:done"></md-icon>Valider</md-button>
+            <md-progress-circular ng-if="loading" class="md-warn md-hue-1" md-diameter="25"></md-progress-circular>
+        </div>
+
 
 
     </form>
