@@ -1,5 +1,4 @@
-<form name="myProfileLinker" ng-submit="actions.onValid(myUser)">
-    <div flex="25" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill>
+    <div flex="25" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill ng-if="isLogged">
 
     <md-input-container flex>
         <label>Recherche</label>
@@ -31,5 +30,26 @@
 
     </div>
 
+    <!-- formulaire si pas connecté -->
+    <form name="myForm" ng-submit="actions.onValid(myUser)" ng-if="!isLogged">
 
-</form>
+        <div layout="column" >
+            <md-input-container >
+                <label>Prénom NOM</label>
+                <input name="name" ng-model="myUser.name" />
+            </md-input-container>
+
+            <md-input-container >
+                <label>Photo</label>
+                <input name="name" ng-model="myUser.photo" />
+            </md-input-container>
+        </div>
+
+
+        <md-button type="submit">
+            <md-icon md-svg-src="material-design:done"></md-icon>
+            Valider
+        </md-button>
+
+
+    </form>

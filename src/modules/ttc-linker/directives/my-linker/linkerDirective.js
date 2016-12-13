@@ -51,6 +51,9 @@ angular.module('eklabs.angularStarterPack.forms')
                   if (!(typeof myUserId === 'number')) {
                     return;
                   }
+                    if (myUserId === undefined){
+                        scope.isLogged = false;
+                    }
                     scope.myUser = scope.findUser(myUserId);
                     scope.myFriends = scope.getFriends(myUserId);
                 });
