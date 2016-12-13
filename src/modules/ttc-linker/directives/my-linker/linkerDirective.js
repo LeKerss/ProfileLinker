@@ -13,38 +13,6 @@ angular.module('eklabs.angularStarterPack.forms')
             },link : function(scope){
                 var userRoute="http://91.134.241.60:3080/resources/users/";
 
-              //TODO : remplacer par appel ajax
-              /*scope.userList = [
-                {
-                    id      :  1,
-                    name    : "Annas Saker",
-                    photo   : "http://2.bp.blogspot.com/-bQKvDrSnBHA/VKHJT_vNXiI/AAAAAAAASfk/MIP0_2Ln1Ns/s1600/Photos-petit-chat-blanc-0.jpg",
-                    friends : [
-                      2,
-                      3
-                    ],
-                    status  : 1
-                },
-                {
-                    id      : 2,
-                    name    : "Cecile Hu",
-                    photo   : "https://cdn.pixabay.com/photo/2016/03/04/22/54/panda-1236875_960_720.jpg",
-                    friends : [
-                      1
-                    ],
-                    status  : 0
-                },
-                {
-                    id      : 3,
-                    name    : "Ludo Babadjo",
-                    photo   : "http://www.jdubuzz.com/files/2015/07/bonjour-peuple-mexicain_54k7r_25yo9p.jpg",
-                    friends : [
-                      1
-                    ],
-                    status  : 1
-                }
-              ];*/
-
                 /**
                  *
                  */
@@ -55,7 +23,7 @@ angular.module('eklabs.angularStarterPack.forms')
                         scope.findUser(myUserId).then(
                             // si id de l'utilisateur trouvé
                             function (result) {
-                                scope.userObject=result.data;
+                                scope.userObject = result.data;
                                 var friendsPromises = scope.userObject.friends.map(function (friendId) {
                                     return scope.findUser(friendId);
                                 });
@@ -143,7 +111,7 @@ angular.module('eklabs.angularStarterPack.forms')
                     },
 
                 ];
-                console.log("mon id est le suivant :", scope.myUser.id);
+                
                 scope.toggleAddFriends = function(ev) {
                     $mdDialog.show({
                       controller : AddFriendsDialogController,
@@ -153,7 +121,7 @@ angular.module('eklabs.angularStarterPack.forms')
                       clickOutsideToClose:true,
                       fullscreen : scope.customFullscreen,
                       locals: {
-                        myUserId: scope.myUserId
+                        myUserId: scope.userObject.id
                       }
                     })
                     .then(function(newFriend){
@@ -175,7 +143,7 @@ angular.module('eklabs.angularStarterPack.forms')
 
                     $http({
                       method: "PUT",
-                      url:  "http://91.134.241.60:3080/resources/users/" + person.id,
+                      url:  userRoute + person.id,
                       data: updatedPerson
                     })
                     .then(
@@ -187,7 +155,7 @@ angular.module('eklabs.angularStarterPack.forms')
                   scope.people = [];
                   $http({
                     method: "GET",
-                    url: "http://91.134.241.60:3080/resources/users",
+                    url: userRoute,
                   }).then(function successCallback(response){
                     console.log(response)
                     scope.people = response.data;
