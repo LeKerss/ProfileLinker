@@ -33,15 +33,12 @@
     <!-- formulaire si pas connecté -->
     <form name="myForm" ng-submit="actions.onValid(myUser)" ng-if="!isLogged">
 
+        <md-subheader>Formulaire de connexion</md-subheader>
+
         <div layout="column" >
             <md-input-container >
                 <label>Prénom NOM</label>
                 <input name="name" ng-model="myUser.name" />
-            </md-input-container>
-
-            <md-input-container >
-                <label>Photo</label>
-                <input name="name" ng-model="myUser.photo" />
             </md-input-container>
         </div>
 
