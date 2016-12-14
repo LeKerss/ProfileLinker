@@ -43,7 +43,7 @@ angular.module('demoApp')
             },
             {
                 case: 'Case Ludo',
-                user: 3,
+                user: "585161570532ac18c82348d2",
                 callback: {
                     onValid: function (user) {
                         displayCode('onValid', user)

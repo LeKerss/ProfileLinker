@@ -13,7 +13,7 @@ angular.module('demoApp')
         $mdThemingProvider.theme('docs-dark', 'default')
             .primaryPalette('blue')
             .dark();
-        
+
         /**
          * Here build your icon libraries
          */

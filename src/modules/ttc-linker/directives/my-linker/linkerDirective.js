@@ -130,6 +130,10 @@ angular.module('eklabs.angularStarterPack.forms')
                     });
                 }
 
+                scope.havingRequests = function() {
+                  return (scope.userObject.requests.length > 0);
+                }
+
                 function AddFriendsDialogController(scope, $mdDialog, myUser){
 
                   scope.myUser = myUser;
