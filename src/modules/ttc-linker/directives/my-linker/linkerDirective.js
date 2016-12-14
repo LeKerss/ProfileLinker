@@ -133,12 +133,14 @@ angular.module('eklabs.angularStarterPack.forms')
 
                 function AddFriendsDialogController(scope, $mdDialog, myUser){
 
+                  scope.myUser = myUser;
+
+
                   scope.addFriend = function (person) {
                     if(!person.requests){
                       person.requests = [];
                     }
                     if(person.requests.indexOf(myUser.id) ==! -1){
-                      scope.cancel();
                       return
                     }
                     var updatedPerson = person;
@@ -160,6 +162,7 @@ angular.module('eklabs.angularStarterPack.forms')
                   };
 
                   scope.people = [];
+
                   $http({
                     method: "GET",
                     url: userRoute,
@@ -167,7 +170,7 @@ angular.module('eklabs.angularStarterPack.forms')
                     // console.log(response)
                     scope.people = response.data;
                     scope.people = scope.people.filter(function(p){
-                      return ((typeof p == "object") && (p.id !== myUser.id) && (myUser.friends.indexOf(p.id) === -1));
+                      return ((typeof p == "object") && (p.id !== scope.myUser.id) && (scope.myUser.friends.indexOf(p.id) === -1));
                     });
 
                   }, function errorCallback(response){
