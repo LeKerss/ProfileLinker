@@ -1,0 +1,47 @@
+<md-dialog aria-label="Ajouter un Ami" flex="100" layout-fill>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Ajouter un ami</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-clck="cancel()">
+          <md-icon md-svg-src="material-design:close" aria-label="Fermer"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+    <form  ng-submit="addFriend()">
+      <div flex="100" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill>
+
+      <md-input-container flex>
+          <label>Recherche</label>
+          <input ng-model="input">
+      </md-input-container>
+
+          <md-list style="height: 100%; overflow: auto">
+
+              <md-list-item disabled="person.requests.indexOf(myUser.id) !== -1" ng-click="addFriend(person)" class="md-3-line" ng-click="null" ng-repeat="person in people | filter: input">
+                <!-- <div ng-if="isFilter()"> -->
+                  <img ng-if="person.photo" ng-src="{{person.photo}}" class="md-avatar" alt="{{person.name}}" />
+                  <img ng-if="!person.photo" ng-src="" class="md-avatar" alt="Default" />
+
+                  <div class="md-list-item-text" layout="column">
+                      <h3>{{person.name}}</h3>
+                  </div>
+                  <div class ="md-list-item-status" layout="column">
+                      <md-button class="md-icon-button" aria-label="ajouter" ng-if="person.requests.indexOf(myUser.id) === -1">
+                        <md-icon md-svg-src="material-design:add" aria-label="ajouter"></md-icon>
+                      </md-button>
+                      <md-icon ng-if="person.requests.indexOf(myUser.id) !== -1" md-svg-src="material-design:done"  style="color : green"></md-icon>
+                      <icon src = "dskdskldj/nfdknfd/fdjskf" alt = "bonjour"/>
+                  </div>
+
+              </md-list-item>
+            <!-- </div> -->
+          </md-list>
+
+          <div flex></div>
+
+      </div>
+    </form>
+  </md-dialog-content>
+</md-Dialog>

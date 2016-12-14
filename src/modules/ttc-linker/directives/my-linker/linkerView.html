@@ -1,4 +1,4 @@
-    <div flex="25" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill ng-if="isLogged">
+    <div flex="25" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill ng-if="isLogged" >
 
     <md-input-container flex>
         <label>Recherche</label>
@@ -27,7 +27,11 @@
         </md-list>
 
         <div flex></div>
-
+        <div>
+          <md-button class="md-fab md-primary md-hue-2" aria-label="Profile" ng-click="toggleAddFriends($event)">
+              <md-icon md-svg-src="material-design:add"></md-icon>
+          </md-button>
+        </div>
     </div>
 
     <!-- formulaire si pas connecté -->
@@ -41,7 +45,6 @@
                 <input name="name" ng-model="myUserId" />
             </md-input-container>
         </div>
-
 
         <div layout="row" layout-align="start center">
             <md-button type="submit"><md-icon md-svg-src="material-design:done"></md-icon>Valider</md-button>

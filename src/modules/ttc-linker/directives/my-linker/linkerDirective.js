@@ -4,47 +4,15 @@
 'use strict';
 
 angular.module('eklabs.angularStarterPack.forms')
-    .directive('myProfileLinker',function($log, $http, $q){
+    .directive('myProfileLinker',function($log, $http, $mdDialog, $q){
         return {
-            templateUrl : 'eklabs.angularStarterPack/modules/ttc-linker/directives/my-linker/linkerView.html',
+          templateUrl : 'eklabs.angularStarterPack/modules/ttc-linker/directives/my-linker/linkerView.html',
             scope : {
                 user        : '=',
                 callback    : '=?'
             },link : function(scope){
                 var userRoute="http://91.134.241.60:3080/resources/users/";
                 scope.loading=false;
-
-              //TODO : remplacer par appel ajax
-              /*scope.userList = [
-                {
-                    id      :  1,
-                    name    : "Annas Saker",
-                    photo   : "http://2.bp.blogspot.com/-bQKvDrSnBHA/VKHJT_vNXiI/AAAAAAAASfk/MIP0_2Ln1Ns/s1600/Photos-petit-chat-blanc-0.jpg",
-                    friends : [
-                      2,
-                      3
-                    ],
-                    status  : 1
-                },
-                {
-                    id      : 2,
-                    name    : "Cecile Hu",
-                    photo   : "https://cdn.pixabay.com/photo/2016/03/04/22/54/panda-1236875_960_720.jpg",
-                    friends : [
-                      1
-                    ],
-                    status  : 0
-                },
-                {
-                    id      : 3,
-                    name    : "Ludo Babadjo",
-                    photo   : "http://www.jdubuzz.com/files/2015/07/bonjour-peuple-mexicain_54k7r_25yo9p.jpg",
-                    friends : [
-                      1
-                    ],
-                    status  : 1
-                }
-              ];*/
 
                 /**
                  *
@@ -53,7 +21,9 @@ angular.module('eklabs.angularStarterPack.forms')
                     if (myUserId === undefined) {
                         resetUser();
                     } else {
+
                         getUser(myUserId);
+
                     }
 
                 });
@@ -152,6 +122,84 @@ angular.module('eklabs.angularStarterPack.forms')
                     },
 
                 ];
+
+                scope.toggleAddFriends = function(ev) {
+                    $mdDialog.show({
+                      controller : AddFriendsDialogController,
+                      templateUrl: "eklabs.angularStarterPack/modules/ttc-linker/directives/my-linker/addFriendsDialogView.html",
+                      parent      : angular.element(document.body),
+                      targetEvent : ev,
+                      clickOutsideToClose:true,
+                      fullscreen : scope.customFullscreen,
+                      locals: {
+                        myUser: scope.userObject
+                      }
+                    })
+                    .then(function(newFriend){
+
+                    }, function(){
+
+                    });
+                }
+
+                function AddFriendsDialogController(scope, $mdDialog, myUser){
+
+                  scope.myUser = myUser;
+
+
+                  scope.addFriend = function (person) {
+                    if(!person.requests){
+                      person.requests = [];
+                    }
+                    if(person.requests.indexOf(myUser.id) ==! -1){
+                      return
+                    }
+                    var updatedPerson = person;
+                    updatedPerson.requests.push(myUser.id);
+
+                    $http({
+                      method: "PUT",
+                      url:  userRoute + person.id,
+                      data: updatedPerson
+                    }).then(
+                      function successCallback(response) {
+                        person = updatedPerson;
+                        console.log("updated :", response)
+                      },
+                      function errorCallback(response) {
+                        console.log(response);
+                      });
+
+                  };
+
+                  scope.people = [];
+
+                  $http({
+                    method: "GET",
+                    url: userRoute,
+                  }).then(function successCallback(response){
+                    // console.log(response)
+                    scope.people = response.data;
+                    scope.people = scope.people.filter(function(p){
+                      return ((typeof p == "object") && (p.id !== scope.myUser.id) && (scope.myUser.friends.indexOf(p.id) === -1));
+                    });
+
+                  }, function errorCallback(response){
+                    console.log(response);
+                  });
+
+                  scope.hide = function() {
+                    $mdDialog.hide();
+                  };
+
+                  scope.cancel = function() {
+                    $mdDialog.cancel();
+                  };
+
+                  scope.friendAdded = function(newFriend) {
+                    $mdDialog.hide(newFriend);
+                  };
+              };
 
             }
         }
