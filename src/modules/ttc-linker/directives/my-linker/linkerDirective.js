@@ -12,6 +12,7 @@ angular.module('eklabs.angularStarterPack.forms')
                 callback    : '=?'
             },link : function(scope){
                 var userRoute="http://91.134.241.60:3080/resources/users/";
+                scope.loading=false;
 
                 /**
                  *
@@ -28,16 +29,26 @@ angular.module('eklabs.angularStarterPack.forms')
                 });
 
                 function getUser(myUserId) {
+                    var deferred = $q.defer(); // objet en attente
+
+                    $q.when(deferred.promise, function () {
+                        scope.loading = false;
+                    });
+
                     return findUser(myUserId).then(
                         // si id de l'utilisateur trouvé
                         function (result) {
                             scope.userObject=result.data;
-                            getFriends(myUserId)
+                            // dans tous les cas
+                            getFriends().finally(function () {
+                                deferred.resolve();
+                            });
                         },
                         // si id de l'utilisateur non trouvé
                         function (error) {
                             $log.error("Erreur de récupération de l'utilisteur", error);
                             resetUser();
+                            deferred.resolve();
                         });
                 }
 
@@ -49,13 +60,13 @@ angular.module('eklabs.angularStarterPack.forms')
 
                 // Fonction permettant de récupérer un utilisateur via son id
                 function findUser(id) {
-                    return $http.get(userRoute+id);
+                    return $http.get(userRoute+id, {timeout: 5000});
                   /*return scope.userList.find(function(user) {
                     return user.id === id;
                   });*/
                 }
 
-                function getFriends(userId) {
+                function getFriends() {
                     var friendsPromises = scope.userObject.friends.map(function (friendId) {
                         return findUser(friendId);
                     });
@@ -77,6 +88,7 @@ angular.module('eklabs.angularStarterPack.forms')
                     onValid : function(myUserId){
                         $log.info('my user is : ',myUserId)
                         getUser(myUserId);
+                        scope.loading=true;
                     }
 
                 };
