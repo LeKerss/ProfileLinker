@@ -1,11 +1,11 @@
-    <div flex="25" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill ng-if="isLogged">
+    <div flex="25" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill ng-if="isLogged" >
 
     <md-input-container flex>
         <label>Recherche</label>
         <input ng-model="input">
     </md-input-container>
 
-        <md-list style="height: 90%; overflow: auto">
+        <md-list style="height: 100%; overflow: auto">
 
             <md-list-item class="md-3-line" ng-click="null" ng-repeat="person in userFriends">
 

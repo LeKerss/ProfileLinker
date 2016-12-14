@@ -1,4 +1,4 @@
-<md-dialog aria-label="Ajouter un Ami">
+<md-dialog aria-label="Ajouter un Ami" flex="100" layout-fill>
     <md-toolbar>
       <div class="md-toolbar-tools">
         <h2>Ajouter un ami</h2>
@@ -8,7 +8,7 @@
         </md-button>
       </div>
     </md-toolbar>
-    <md-dialog-content style="max-width:800px;max-height:810px;">
+    <md-dialog-content>
     <form  ng-submit="addFriend()">
       <div flex="100" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill>
 
@@ -17,7 +17,7 @@
           <input ng-model="input">
       </md-input-container>
 
-          <md-list style="height: 90%; overflow: auto">
+          <md-list style="height: 100%; overflow: auto">
 
               <md-list-item ng-click="addFriend(person)" class="md-3-line" ng-click="null" ng-repeat="person in people | filter: input">
                 <!-- <div ng-if="isFilter()"> -->

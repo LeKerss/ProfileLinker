@@ -111,7 +111,7 @@ angular.module('eklabs.angularStarterPack.forms')
                     },
 
                 ];
-                
+
                 scope.toggleAddFriends = function(ev) {
                     $mdDialog.show({
                       controller : AddFriendsDialogController,
@@ -121,7 +121,7 @@ angular.module('eklabs.angularStarterPack.forms')
                       clickOutsideToClose:true,
                       fullscreen : scope.customFullscreen,
                       locals: {
-                        myUserId: scope.userObject.id
+                        myUser: scope.userObject
                       }
                     })
                     .then(function(newFriend){
@@ -131,25 +131,32 @@ angular.module('eklabs.angularStarterPack.forms')
                     });
                 }
 
-                function AddFriendsDialogController(scope, $mdDialog, myUserId){
+                function AddFriendsDialogController(scope, $mdDialog, myUser){
 
                   scope.addFriend = function (person) {
-                    var updatedPerson = person;
-                    if(!updatedPerson.requests){
-                      updatedPerson.requests = [];
+                    if(!person.requests){
+                      person.requests = [];
                     }
-                    console.log(myUserId)
-                    updatedPerson.requests.push(myUserId);
+                    if(person.requests.indexOf(myUser.id) ==! -1){
+                      scope.cancel();
+                      return
+                    }
+                    var updatedPerson = person;
+                    updatedPerson.requests.push(myUser.id);
 
                     $http({
                       method: "PUT",
                       url:  userRoute + person.id,
                       data: updatedPerson
-                    })
-                    .then(
-                      function (response) {},
-                      function (response) {console.log(response);}
-                    )
+                    }).then(
+                      function successCallback(response) {
+                        person = updatedPerson;
+                        console.log("updated :", response)
+                      },
+                      function errorCallback(response) {
+                        console.log(response);
+                      });
+
                   };
 
                   scope.people = [];
@@ -157,8 +164,12 @@ angular.module('eklabs.angularStarterPack.forms')
                     method: "GET",
                     url: userRoute,
                   }).then(function successCallback(response){
-                    console.log(response)
+                    // console.log(response)
                     scope.people = response.data;
+                    scope.people = scope.people.filter(function(p){
+                      return ((typeof p == "object") && (p.id !== myUser.id) && (myUser.friends.indexOf(p.id) === -1));
+                    });
+
                   }, function errorCallback(response){
                     console.log(response);
                   });
