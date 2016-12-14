@@ -20,28 +20,26 @@ angular.module('eklabs.angularStarterPack.forms')
                     if (myUserId === undefined) {
                         resetUser();
                     } else {
-                        scope.findUser(myUserId).then(
-                            // si id de l'utilisateur trouvé
-                            function (result) {
-                                scope.userObject = result.data;
-                                var friendsPromises = scope.userObject.friends.map(function (friendId) {
-                                    return scope.findUser(friendId);
-                                });
-                                $q.all(friendsPromises).then (function (results) {
-                                    scope.userFriends = results.map(function (result) {
-                                        return result.data;
-                                    });
-                                    scope.isLogged = true;
-                                });
-                            },
-                            // si id de l'utilisateur non trouvé
-                            function (error) {
-                                $log.error("Erreur de récupération de l'utilisteur", error);
-                                resetUser();
-                            });
+
+                        getUser(myUserId);
+
                     }
 
                 });
+
+                function getUser(myUserId) {
+                    return findUser(myUserId).then(
+                        // si id de l'utilisateur trouvé
+                        function (result) {
+                            scope.userObject=result.data;
+                            getFriends(myUserId)
+                        },
+                        // si id de l'utilisateur non trouvé
+                        function (error) {
+                            $log.error("Erreur de récupération de l'utilisteur", error);
+                            resetUser();
+                        });
+                }
 
                 function resetUser() {
                     scope.isLogged = false;
@@ -50,25 +48,25 @@ angular.module('eklabs.angularStarterPack.forms')
                 }
 
                 // Fonction permettant de récupérer un utilisateur via son id
-                scope.findUser = function(id) {
+                function findUser(id) {
                     return $http.get(userRoute+id);
                   /*return scope.userList.find(function(user) {
                     return user.id === id;
                   });*/
-                };
-
-                scope.getFriends = function(userId) {
-
-                  //TODO ajax
-                  // $http.get()
-                  return scope.findUser(userId).friends.map(function(id) {
-                      return scope.findUser(id);
-                    }
-                  )
-
                 }
 
+                function getFriends(userId) {
+                    var friendsPromises = scope.userObject.friends.map(function (friendId) {
+                        return findUser(friendId);
+                    });
+                    return $q.all(friendsPromises).then (function (results) {
+                        scope.userFriends = results.map(function (result) {
+                            return result.data;
+                        });
+                        scope.isLogged = true;
+                    });
 
+                }
 
 
                 /**
@@ -76,8 +74,9 @@ angular.module('eklabs.angularStarterPack.forms')
                  * @type {{onValid: default_actions.onValid}}
                  */
                 var default_actions = {
-                    onValid : function(user){
-                        $log.info('my user is : ',user)
+                    onValid : function(myUserId){
+                        $log.info('my user is : ',myUserId)
+                        getUser(myUserId);
                     }
 
                 };
