@@ -16,7 +16,7 @@ angular.module('demoApp')
             /**
              * Default
              */
-            case: 'Default Case',
+            case: 'Default Profile',
             user: undefined,
             callback: undefined
         },
@@ -24,7 +24,7 @@ angular.module('demoApp')
              * Case user
              */
             {
-                case: 'Case Annas',
+                case: 'Profile Annas',
                 user: "58512a260532ac18c82348b5",
                 callback: {
                     onValid: function (user) {
@@ -33,7 +33,7 @@ angular.module('demoApp')
                 }
             },
             {
-                case: 'Case Cecile',
+                case: 'Profile Cecile',
                 user: "58512ff50532ac18c82348b9",
                 callback: {
                     onValid: function (user) {
@@ -42,7 +42,7 @@ angular.module('demoApp')
                 }
             },
             {
-                case: 'Case Ludo',
+                case: 'Profile Ludo',
                 user: "585161570532ac18c82348d2",
                 callback: {
                     onValid: function (user) {
