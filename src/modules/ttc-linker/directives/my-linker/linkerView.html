@@ -37,10 +37,15 @@
 
         <div flex></div>
         <div>
-          <md-button class="md-fab md-primary md-hue-2" aria-label="Profile" ng-click="toggleAddFriends($event)">
+          <md-button style="float:left" ng-if="havingRequests()" class="md-fab md-primary md-hue-2" aria-label="Profile" ng-click="toggleMyRequests($event)">
+              <md-icon md-svg-src="material-design:announcement"></md-icon>
+          </md-button>
+          <md-button style="float:right" class="md-fab md-primary md-hue-2" aria-label="Profile" ng-click="toggleAddFriends($event)">
               <md-icon md-svg-src="material-design:person_add"></md-icon>
+
           </md-button>
         </div>
+
     </div>
 
     <!-- formulaire si pas connecté -->
