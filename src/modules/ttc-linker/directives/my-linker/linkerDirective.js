@@ -130,10 +130,6 @@ angular.module('eklabs.angularStarterPack.forms')
                     });
                 }
 
-                scope.havingRequests = function() {
-                  return (scope.userObject.requests.length > 0);
-                }
-
                 function AddFriendsDialogController(scope, $mdDialog, myUser){
 
                   scope.myUser = myUser;
@@ -192,6 +188,88 @@ angular.module('eklabs.angularStarterPack.forms')
                     $mdDialog.hide(newFriend);
                   };
               };
+
+              scope.havingRequests = function() {
+                return (scope.userObject.requests.length > 0);
+              }
+
+              scope.toggleMyRequests = function(ev) {
+                  $mdDialog.show({
+                    controller : myRequestsDialogController,
+                    templateUrl: "eklabs.angularStarterPack/modules/ttc-linker/directives/my-linker/myRequestsDialogView.html",
+                    parent      : angular.element(document.body),
+                    targetEvent : ev,
+                    clickOutsideToClose:true,
+                    fullscreen : scope.customFullscreen,
+                    locals: {
+                      myUser: scope.userObject
+                    }
+                  })
+                  .then(function(newFriend){
+
+                  }, function(){
+
+                  });
+              }
+
+              function myRequestsDialogController(scope, $mdDialog, myUser){
+
+                scope.myUser = myUser;
+
+
+                scope.addFriend = function (person) {
+                  if(!person.requests){
+                    person.requests = [];
+                  }
+                  if(person.requests.indexOf(myUser.id) ==! -1){
+                    return
+                  }
+                  var updatedPerson = person;
+                  updatedPerson.requests.push(myUser.id);
+
+                  $http({
+                    method: "PUT",
+                    url:  userRoute + person.id,
+                    data: updatedPerson
+                  }).then(
+                    function successCallback(response) {
+                      person = updatedPerson;
+                      console.log("updated :", response)
+                    },
+                    function errorCallback(response) {
+                      console.log(response);
+                    });
+
+                };
+
+                scope.people = [];
+
+                $http({
+                  method: "GET",
+                  url: userRoute,
+                }).then(function successCallback(response){
+                  // console.log(response)
+                  scope.people = response.data;
+                  scope.people = scope.people.filter(function(p){
+                    return ((typeof p == "object") && (p.id !== scope.myUser.id) && (scope.myUser.friends.indexOf(p.id) === -1));
+                  });
+
+                }, function errorCallback(response){
+                  console.log(response);
+                });
+
+                scope.hide = function() {
+                  $mdDialog.hide();
+                };
+
+                scope.cancel = function() {
+                  $mdDialog.cancel();
+                };
+
+                scope.friendAdded = function(newFriend) {
+                  $mdDialog.hide(newFriend);
+                };
+            };
 
             }
         }
