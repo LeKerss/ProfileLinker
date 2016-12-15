@@ -18,5 +18,5 @@ angular.module('demoApp')
          * Here build your icon libraries
          */
         $mdIconProvider
-            .iconSet('material-design','/images/material-design.svg',24);
+            .iconSet('material-design', '/images/material-design.svg', 24);
     });

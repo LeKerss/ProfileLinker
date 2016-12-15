@@ -1,4 +1,5 @@
-<!-<md-dialog aria-label="Ajouter un Ami" style="width:300px;height:400px;">
+<md-dialog aria-label="Ajouter un Ami">
+    <!-- style="width:300px;height:400px;"> -->
     <form ng-submit="addFriend()">
         <md-toolbar>
             <div class="md-toolbar-tools">
@@ -16,21 +17,20 @@
                     <label>Recherche</label><input ng-model="input">
                 </md-input-container>
             </span>
+            <md-list style="height: 90%; overflow: auto">
+                <md-list-item disabled="person.requests.indexOf(myUser.id) !== -1" ng-click="addFriend(person)" class="md-3-line" ng-click="null" ng-repeat="person in people | filter: input | orderBy : 'person.name'">
+                    <img ng-if="person.photo" ng-src="{{person.photo}}" class="md-avatar" alt="{{person.name}}" />
+                    <img ng-if="!person.photo" ng-src="" class="md-avatar" alt="Default" />
 
-            <md-list-item disabled="person.requests.indexOf(myUser.id) !== -1" ng-click="addFriend(person)" class="md-3-line" ng-click="null" ng-repeat="person in people | filter: input | orderBy : 'person.name'">
-                <img ng-if="person.photo" ng-src="{{person.photo}}" class="md-avatar" alt="{{person.name}}" />
-                <img ng-if="!person.photo" ng-src="" class="md-avatar" alt="Default" />
-
-                <div class="md-list-item-text" layout="column"><h3>{{person.name}}</h3></div>
-                <div class ="md-list-item-status" layout="column">
-                    <md-button class="md-icon-button" aria-label="ajouter" ng-if="person.requests.indexOf(myUser.id) === -1">
-                        <md-icon md-svg-src="material-design:add" aria-label="ajouter"></md-icon>
-                    </md-button>
-                    <md-icon ng-if="person.requests.indexOf(myUser.id) !== -1" md-svg-src="material-design:done"  style="color : green"></md-icon>
-                </div>
-            </md-list-item>
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{person.name}}</h3></div>
+                    <div class="md-list-item-status" layout="column">
+                        <md-icon ng-if="person.requests.indexOf(myUser.id) === -1" md-svg-src="material-design:add" aria-label="ajouter"></md-icon>
+                        <md-icon ng-if="person.requests.indexOf(myUser.id) !== -1" md-svg-src="material-design:done" style="color : green"></md-icon>
+                    </div>
+                </md-list-item>
+            </md-list>
         </md-dialog-content>
 
     </form>
 </md-dialog>
-

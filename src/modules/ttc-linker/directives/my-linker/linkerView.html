@@ -1,4 +1,4 @@
-    <div flex="25" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill ng-if="isLogged" >
+    <div flex="33" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill ng-if="isLogged" >
 
         <md-list-item class="md-2-line" style="background-color:lightblue">
             <img class="md-avatar" ng-src="{{userObject.photo}}" alt="{{userObject.name}}" style="width: 60px;height: 60px;"/>
@@ -7,16 +7,16 @@
             </div>
         </md-list-item>
 
-    <md-input-container flex style="left: -10px;">
+    <md-input-container flex>
         <label>Recherche</label>
         <input ng-model="input">
     </md-input-container>
 
-        <md-list style="height: 90%; overflow: auto">
+        <md-list>
             <md-subheader class="md-no-sticky">Nombre d'amis : {{userFriends.length}}</md-subheader>
 
             <!--Affichage de mes amis-->
-            <md-list-item class="md-2-line" ng-click="null" ng-repeat="person in userFriends | filter : input | orderBy : 'person.name'"">
+            <md-list-item class="md-2-line" ng-click="null" ng-repeat="person in userFriends | filter : input | orderBy : 'person.name'">
 
                 <img ng-if="person.photo" ng-src="{{person.photo}}" class="md-avatar" alt="{{person.name}}" />
                 <img ng-if="!person.photo" ng-src="" class="md-avatar" alt="Default" />

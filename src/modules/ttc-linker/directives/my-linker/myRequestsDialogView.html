@@ -1,49 +1,47 @@
-<md-dialog aria-label="Mes requêtes d'ajout" flex="100" layout-fill>
+<md-dialog aria-label="Mes requêtes d'ajout">
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>Mes requêtes d'ajout</h2>
-            <span flex></span>
-            <md-button class="md-icon-button" ng-clck="cancel()">
-                <md-icon md-svg-src="material-design:close" aria-label="Fermer"></md-icon>
-            </md-button>
-        </div>
-    </md-toolbar>
-    <md-dialog-content>
-            <form  ng-submit="addFriend()">
-                <div flex="100" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill>
+<h2>Mes requêtes d'ajout</h2>
+<span flex></span>
+<md-button class="md-icon-button" ng-clck="cancel()">
+    <md-icon md-svg-src="material-design:close" aria-label="Fermer"></md-icon>
+</md-button>
+</div>
+</md-toolbar>
+<md-dialog-content>
+    <div class="md-whiteframe-1dp" layout-fill>
 
-                    <md-input-container flex>
-                        <label>Recherche</label>
-                        <input ng-model="input">
-                    </md-input-container>
+        <md-input-container flex>
+            <label>Recherche</label>
+            <input ng-model="input">
+        </md-input-container>
 
-                    <md-list style="height: 100%; overflow: auto">
-                        <md-list-item ng-click="acceptRequest(person)" class="md-3-line" ng-click="null" ng-repeat="person in people | filter: input">
-                            <div layout="row">
-                                <!-- <div ng-if="isFilter()"> -->
+        <md-list>
+            <md-list-item ng-click="acceptRequest(person)" class="md-3-line" ng-click="null" ng-repeat="person in people | filter: input">
+                <div layout="row">
+                    <!-- <div ng-if="isFilter()"> -->
 
-                                <img flex ng-if="person.photo" ng-src="{{person.photo}}" class="md-avatar" alt="{{person.name}}" />
-                                <img flex ng-if="!person.photo" ng-src="" class="md-avatar" alt="Default" />
+                    <img ng-if="person.photo" ng-src="{{person.photo}}" class="md-avatar" alt="{{person.name}}" />
+                    <img ng-if="!person.photo" ng-src="" class="md-avatar" alt="Default" />
 
-                                <div flex class="md-list-item-text" layout="column">
-                                    <h3>{{person.name}}</h3>
-                                </div>
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{person.name}}</h3>
+                    </div>
 
-                                <div layout="row" flex class="md-list-item-status" layout="column">
-                                    <md-button flex class="md-icon-button" aria-label="ajouter">
-                                        <md-icon flex md-svg-src="material-design:cancel" aria-label="ajouter" style="color:#ec1111"></md-icon>
-                                    </md-button>
-                                    <md-button flex class="md-icon-button" aria-label="ajouter">
-                                        <md-icon flex md-svg-src="material-design:done" aria-label="ajouter" style="color:#1111ec"></md-icon>
-                                    </md-button>
-                                </div>
-                            </div>
-                        </md-list-item>
-                        <!-- </div> -->
-
-                    </md-list>
-                    <div flex></div>
+                    <div class="md-list-item-status">
+                        <md-button class="md-icon-button" aria-label="ajouter">
+                            <md-icon md-svg-src="material-design:cancel" aria-label="ajouter" style="color:#ec1111"></md-icon>
+                        </md-button>
+                        <md-button class="md-icon-button" aria-label="ajouter">
+                            <md-icon md-svg-src="material-design:done" aria-label="ajouter" style="color:#1111ec"></md-icon>
+                        </md-button>
+                    </div>
                 </div>
-        </form>
+            </md-list-item>
+            <!-- </div> -->
+
+        </md-list>
+        <div flex></div>
+    </div>
     </md-dialog-content>
 </md-Dialog>

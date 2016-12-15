@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module('demoApp')
-    .controller('linkerCtrl', function ($log, $scope, $mdDialog) {
+    .controller('linkerCtrl', function($log, $scope, $mdDialog) {
 
 
         // ----------------------------------------------------------------------------------------------------
@@ -13,13 +13,13 @@ angular.module('demoApp')
 
 
         $scope.params = [{
-            /**
-             * Default
-             */
-            case: 'Default Profile',
-            user: undefined,
-            callback: undefined
-        },
+                /**
+                 * Default
+                 */
+                case: 'Default Profile',
+                user: undefined,
+                callback: undefined
+            },
             /**
              * Case user
              */
@@ -27,32 +27,30 @@ angular.module('demoApp')
                 case: 'Profile Annas',
                 user: "58512a260532ac18c82348b5",
                 callback: {
-                    onValid: function (user) {
+                    onValid: function(user) {
                         displayCode('onValid', user)
                     }
                 }
-            },
-            {
+            }, {
                 case: 'Profile Cecile',
                 user: "58512ff50532ac18c82348b9",
                 callback: {
-                    onValid: function (user) {
+                    onValid: function(user) {
                         displayCode('onValid', user)
                     }
                 }
-            },
-            {
+            }, {
                 case: 'Profile Ludo',
                 user: "585161570532ac18c82348d2",
                 callback: {
-                    onValid: function (user) {
+                    onValid: function(user) {
                         displayCode('onValid', user)
                     }
                 }
             }
         ];
 
-        $scope.chooseParams = function (index) {
+        $scope.chooseParams = function(index) {
             // --- Define current status
             $scope.myUser = $scope.params[index].user;
             $scope.myCallback = $scope.params[index].callback
@@ -64,10 +62,10 @@ angular.module('demoApp')
 
         // --- Init
         $scope.chooseParams(0);
-        $scope.isLogged=false; // par défaut pas connecté
+        $scope.isLogged = false; // par défaut pas connecté
 
         // --- Update result viewer
-        var displayCode = function (from, code, isError) {
+        var displayCode = function(from, code, isError) {
 
             $scope.haveResult = true;
 
@@ -83,7 +81,7 @@ angular.module('demoApp')
         $scope.displayCode = false;
         $scope.maxHeight = $(window).height() - 250;
 
-        $scope.showCode = function () {
+        $scope.showCode = function() {
             $scope.displayCode = !$scope.displayCode;
         };
 
@@ -110,7 +108,7 @@ angular.module('demoApp')
          */
         $scope.fullScreenMode = true;
         $scope.hideParams = false;
-        $scope.fullScreen = function () {
+        $scope.fullScreen = function() {
             $scope.hideParams = !$scope.hideParams;
         };
 
