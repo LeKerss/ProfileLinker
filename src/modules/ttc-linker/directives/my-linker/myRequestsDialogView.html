@@ -23,9 +23,49 @@
                 <div class="md-list-item-text" layout="column">
                     <h3>{{person.name}}</h3></div>
                 <div class="md-list-item-status" layout="row">
-                    <md-icon md-svg-src="material-design:cancel" aria-label="annuler" style="color:#ec1111"></md-icon>
-                    <md-icon md-svg-src="material-design:done" aria-label="ajouter" style="color:#1111ec"></md-icon>
+                    <md-button class="md-icon-button" aria-label="annuler">
+                        <md-icon md-svg-src="material-design:cancel" aria-label="annuler" style="color:#ec1111"></md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="ajouter">
+                        <md-icon md-svg-src="material-design:done" aria-label="ajouter" style="color:#1111ec"></md-icon>
+                    </md-button>
                 </div>
             </md-list-item>
         </md-list>
     </md-dialog-content>
+
+
+<!--
+
+<md-dialog-content>
+    <div class="md-whiteframe-1dp" layout-fill>
+        <md-input-container flex><label>Recherche</label><input ng-model="input"></md-input-container>
+
+        <md-list>
+            <md-list-item ng-click="acceptRequest(person)" class="md-3-line" ng-click="null" ng-repeat="person in people | filter: input">
+                <div layout="row">
+                    <img ng-if="person.photo" ng-src="{{person.photo}}" class="md-avatar" alt="{{person.name}}" />
+                    <img ng-if="!person.photo" ng-src="" class="md-avatar" alt="Default" />
+
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{person.name}}</h3>
+                    </div>
+
+                    <div class="md-list-item-status">
+                        <md-button class="md-icon-button" aria-label="ajouter">
+                            <md-icon md-svg-src="material-design:cancel" aria-label="ajouter" style="color:#ec1111"></md-icon>
+                        </md-button>
+                        <md-button class="md-icon-button" aria-label="ajouter">
+                            <md-icon md-svg-src="material-design:done" aria-label="ajouter" style="color:#1111ec"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+            </md-list-item>
+            &lt;!&ndash; </div> &ndash;&gt;
+
+        </md-list>
+        <div flex></div>
+    </div>
+    </md-dialog-content>
+</md-dialog>
+-->
