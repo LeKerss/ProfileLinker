@@ -1,68 +1,69 @@
-    <div flex="33" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill ng-if="isLogged" >
+<div flex="33" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill ng-if="isLogged">
 
-        <md-list-item class="md-2-line" style="background-color:lightblue">
-            <img class="md-avatar" ng-src="{{userObject.photo}}" alt="{{userObject.name}}" style="width: 60px;height: 60px;"/>
-            <div class="md-list-item-text">
-                <h3>{{userObject.name}}</h3>
-            </div>
-        </md-list-item>
+    <md-list-item class="md-2-line" style="background-color:lightblue">
+        <img class="md-avatar" ng-src="{{userObject.photo}}" alt="{{userObject.name}}" style="width: 60px;height: 60px;" />
+        <div class="md-list-item-text">
+            <h3>{{userObject.name}}</h3>
+        </div>
+    </md-list-item>
 
     <md-input-container flex>
         <label>Recherche</label>
         <input ng-model="input">
     </md-input-container>
 
-        <md-list>
-            <md-subheader class="md-no-sticky">Nombre d'amis : {{userFriends.length}}</md-subheader>
+    <md-list>
+        <md-subheader class="md-no-sticky">Nombre d'amis : {{userFriends.length}}</md-subheader>
 
-            <!--Affichage de mes amis-->
-            <md-list-item class="md-2-line" ng-click="null" ng-repeat="person in userFriends | filter : input | orderBy : 'person.name'">
+        <!--Affichage de mes amis-->
+        <md-list-item class="md-2-line" ng-click="null" ng-repeat="person in userFriends | filter : input | orderBy : 'person.name'">
 
-                <img ng-if="person.photo" ng-src="{{person.photo}}" class="md-avatar" alt="{{person.name}}" />
-                <img ng-if="!person.photo" ng-src="" class="md-avatar" alt="Default" />
+            <img ng-if="person.photo" ng-src="{{person.photo}}" class="md-avatar" alt="{{person.name}}" />
+            <img ng-if="!person.photo" ng-src="" class="md-avatar" alt="Default" />
 
-                <div class="md-list-item-text">
-                    <h3>{{person.name}}</h3>
-                    <p ng-if="person.status=='1'">Disponible</p>
-                    <p ng-if="person.status=='0'">Absent</p>
-                </div>
-                <div class ="md-list-item-status" layout="column">
-                    <md-icon md-svg-src="material-design:account_circle" ng-if="person.status=='1'" aria-label="android" style="color:#00ec4b"></md-icon>
-                    <md-icon md-svg-src="material-design:account_circle" ng-if="person.status=='0'" aria-label="android" style="color:#a8a8a8"></md-icon>
-                </div>
+            <div class="md-list-item-text">
+                <h3>{{person.name}}</h3>
+                <p ng-if="person.status=='1'">Disponible</p>
+                <p ng-if="person.status=='0'">Absent</p>
+            </div>
+            <div class="md-list-item-status" layout="column">
+                <md-icon md-svg-src="material-design:account_circle" ng-if="person.status=='1'" aria-label="android" style="color:#00ec4b"></md-icon>
+                <md-icon md-svg-src="material-design:account_circle" ng-if="person.status=='0'" aria-label="android" style="color:#a8a8a8"></md-icon>
+            </div>
 
-            </md-list-item>
+        </md-list-item>
 
-        </md-list>
+    </md-list>
 
-        <div flex></div>
-        <div>
-          <md-button style="float:left" ng-if="havingRequests()" class="md-fab md-primary md-hue-2" aria-label="Profile" ng-click="toggleMyRequests($event)">
-              <md-icon md-svg-src="material-design:announcement"></md-icon>
-          </md-button>
-          <md-button style="float:right" class="md-fab md-primary md-hue-2" aria-label="Profile" ng-click="toggleAddFriends($event)">
-              <md-icon md-svg-src="material-design:person_add"></md-icon>
+    <div flex></div>
+    <div>
+        <md-button style="float:left" ng-if="havingRequests()" class="md-fab md-primary md-hue-2" aria-label="Profile" ng-click="toggleMyRequests($event)">
+            <md-icon md-svg-src="material-design:announcement"></md-icon>
+        </md-button>
+        <md-button style="float:right" class="md-fab md-primary md-hue-2" aria-label="Profile" ng-click="toggleAddFriends($event)">
+            <md-icon md-svg-src="material-design:person_add"></md-icon>
 
-          </md-button>
-        </div>
-
+        </md-button>
     </div>
 
-    <!-- formulaire si pas connecté -->
-    <form name="myForm" ng-submit="actions.onValid(myUserId)" ng-if="!isLogged">
+</div>
 
-        <md-subheader class="md-primary">Se connecter en tant que </md-subheader>
+<!-- formulaire si pas connecté -->
+<form name="myForm" ng-submit="actions.onValid(myUserId)" ng-if="!isLogged">
 
-        <div layout="column" >
-            <md-input-container >
-                <label>Entrer le id de l'utilisateur</label>
-                <input name="name" ng-model="myUserId" />
-            </md-input-container>
-        </div>
+    <md-subheader class="md-primary">Se connecter en tant que </md-subheader>
 
-        <div layout="row" layout-align="start center">
-            <md-button type="submit"><md-icon md-svg-src="material-design:done"></md-icon>Valider</md-button>
-            <md-progress-circular ng-if="loading" class="md-warn md-hue-1" md-diameter="25"></md-progress-circular>
-        </div>
+    <div layout="column">
+        <md-input-container>
+            <label>Entrer le id de l'utilisateur</label>
+            <input name="name" ng-model="myUserId" />
+        </md-input-container>
+    </div>
 
-    </form>
+    <div layout="row" layout-align="start center">
+        <md-button type="submit">
+            <md-icon md-svg-src="material-design:done"></md-icon>Valider</md-button>
+        <md-progress-circular ng-if="loading" class="md-warn md-hue-1" md-diameter="25"></md-progress-circular>
+    </div>
+
+</form>

@@ -1,50 +1,50 @@
 <md-dialog aria-label="Mes requêtes d'ajout" flex="100" style="width:auto" style="width:auto" layout-fill>
     <form>
-    <md-toolbar>
-        <div class="md-toolbar-tools">
-            <h2>Mes requêtes d'ajout</h2>
-            <span flex></span>
-            <md-button class="md-icon-button" ng-clck="cancel()">
-                <md-icon md-svg-src="material-design:cancel" aria-label="Fermer"></md-icon>
-            </md-button>
-        </div>
-    </md-toolbar>
-    <md-dialog-content>
-                <div flex="100" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Mes requêtes d'ajout</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-clck="hide()">
+                    <md-icon md-svg-src="material-design:cancel" aria-label="Fermer"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div flex="100" layout="column" id="sidenav" class="md-whiteframe-1dp" layout-fill>
 
-                    <md-input-container flex>
-                        <label>Recherche</label>
-                        <input ng-model="input">
-                    </md-input-container>
+                <md-input-container flex>
+                    <label>Recherche</label>
+                    <input ng-model="input">
+                </md-input-container>
 
-                    <md-list style="height: 100%; overflow: auto">
-                        <md-list-item flex ng-click="acceptRequest(person)" class="md-3-line" ng-click="null" ng-repeat="person in people | filter: input">
-                            <div flex layout="row">
-                                <!-- <div ng-if="isFilter()"> -->
-                                <div layout="row" style="width:auto">
-                                    <img ng-if="person.photo" ng-src="{{person.photo}}" class="md-avatar" alt="{{person.name}}" />
-                                    <img ng-if="!person.photo" ng-src="" class="md-avatar" alt="Default" />
-                                    <div class="md-list-item-text" layout="row">
-                                        <h3>{{person.name}}</h3>
-                                    </div>
-                                </div>
-                                <span flex></span>
-                                <div style="float:right" flex="40" layout="row" class="md-list-item-actions">
-                                    <md-button style="width:auto" class="md-icon-button" aria-label="ajouter">
-                                        <md-icon md-svg-src="material-design:done" aria-label="ajouter" style="color:#1111ec"></md-icon>
-                                    </md-button>
-                                    <md-button style="width:auto" class="md-icon-button" aria-label="ajouter">
-                                        <md-icon md-svg-src="material-design:cancel" aria-label="ajouter" style="color:#ec1111"></md-icon>
-                                    </md-button>
+                <md-list style="height: 100%; overflow: auto">
+                    <md-list-item flex ng-click="acceptRequest(person)" class="md-3-line" ng-click="null" ng-repeat="person in people | filter: input">
+                        <div flex layout="row">
+                            <!-- <div ng-if="isFilter()"> -->
+                            <div layout="row" style="width:auto">
+                                <img ng-if="person.photo" ng-src="{{person.photo}}" class="md-avatar" alt="{{person.name}}" />
+                                <img ng-if="!person.photo" ng-src="" class="md-avatar" alt="Default" />
+                                <div class="md-list-item-text" layout="row">
+                                    <h3>{{person.name}}</h3>
                                 </div>
                             </div>
-                        </md-list-item>
-                        <!-- </div> -->
+                            <span flex></span>
+                            <div style="float:right" flex="40" layout="row" class="md-list-item-actions">
+                                <md-button style="width:auto" class="md-icon-button" aria-label="accepter" ng-click="acceptRequest(person)">
+                                    <md-icon md-svg-src="material-design:done" aria-label="ajouter" style="color:#1111ec"></md-icon>
+                                </md-button>
+                                <md-button style="width:auto" class="md-icon-button" aria-label="refuser" ng-click="declineRequest(person)">
+                                    <md-icon md-svg-src="material-design:cancel" aria-label="ajouter" style="color:#ec1111"></md-icon>
+                                </md-button>
+                            </div>
+                        </div>
+                    </md-list-item>
+                    <!-- </div> -->
 
-                    </md-list>
-                    <div flex></div>
-                </div>
+                </md-list>
+                <div flex></div>
+            </div>
 
-    </md-dialog-content>
+        </md-dialog-content>
     </form>
 </md-Dialog>
