@@ -202,7 +202,9 @@ angular.module('eklabs.angularStarterPack.forms')
                 };
 
                 scope.havingRequests = function() {
-                    return (scope.userObject.requests.length > 0);
+                    if(!scope.userObject) return false;
+
+                    return ((scope.userObject.requests instanceof Array) && (scope.userObject.requests.length > 0));
                 }
 
                 scope.toggleMyRequests = function(ev) {
@@ -233,25 +235,39 @@ angular.module('eklabs.angularStarterPack.forms')
                             return;
                         }
 
-                        myUser.requests = myUser.requests.filter(function(r){
+                        myUser.requests = myUser.requests.filter(function(r) {
                             return (r !== person.id)
                         })
+
+                        var newRequests = myUser.requests;
+                        myUser.requests = null;
+
                         $http({
                             method: "PUT",
                             url: userRoute + myUser.id,
                             data: myUser
                         }).then(
                             function successCallback(response) {
-                                person = myUser;
+                                myUser.requests = newRequests;
+                                $http({
+                                    method: "PUT",
+                                    url: userRoute + myUser.id,
+                                    data: myUser
+                                }).then(
+                                    function successCallback(response) {
+                                        scope.updateRequests();
+                                        // console.log("updated1 :", response)
+                                    },
+                                    function errorCallback(response) {
+                                        console.log(response);
+                                    });
                                 // console.log("updated1 :", response)
                             },
                             function errorCallback(response) {
                                 console.log(response);
                             });
-                    
                     }
                     scope.acceptRequest = function(person) {
-                        debugger;
 
                         if (!person.friends) {
                             person.friends = [];
@@ -303,10 +319,9 @@ angular.module('eklabs.angularStarterPack.forms')
                                     data: myUser
                                 }).then(
                                     function successCallback(response) {
-                                        console.log("updated3 :", response)
+                                        scope.updateRequests();
                                     },
                                     function errorCallback(response) {
-                                        console.log(response);
                                     });
                             },
                             function errorCallback(response) {
@@ -315,21 +330,26 @@ angular.module('eklabs.angularStarterPack.forms')
 
                     };
 
-                    scope.people = [];
+                    scope.updateRequests = function() {
+                        scope.people = [];
 
-                    $http({
-                        method: "GET",
-                        url: userRoute,
-                    }).then(function successCallback(response) {
-                        // console.log(response)
-                        scope.people = response.data;
-                        scope.people = scope.people.filter(function(p) {
-                            return ((typeof p == "object") && (p.id !== scope.myUser.id) && (scope.myUser.requests.indexOf(p.id) !== -1));
+                        $http({
+                            method: "GET",
+                            url: userRoute,
+                        }).then(function successCallback(response) {
+                            // console.log(response)
+                            scope.people = response.data;
+                            scope.people = scope.people.filter(function(p) {
+                                return ((typeof p == "object") && (p.id !== scope.myUser.id) && (scope.myUser.requests.indexOf(p.id) !== -1));
+                            });
+                            console.log(scope.people);
+
+                        }, function errorCallback(response) {
+                            console.log(response);
                         });
+                    }
 
-                    }, function errorCallback(response) {
-                        console.log(response);
-                    });
+                    scope.updateRequests();
 
                     scope.hide = function() {
                         $mdDialog.hide();
@@ -343,6 +363,7 @@ angular.module('eklabs.angularStarterPack.forms')
                         $mdDialog.hide(newFriend);
                     };
                 };
+
 
             }
         }
