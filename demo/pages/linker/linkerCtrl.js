@@ -40,8 +40,8 @@ angular.module('demoApp')
                     }
                 }
             }, {
-                case: 'Profile Ludo',
-                user: "585161570532ac18c82348d2",
+                case: 'Profile Wang',
+                user: "585262e90532ac18c82348d5",
                 callback: {
                     onValid: function(user) {
                         displayCode('onValid', user)
