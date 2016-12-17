@@ -46,9 +46,7 @@ angular.module('demoApp')
                     onValid: function(user) {
                         displayCode('onValid', user)
                     }
-                }
-
-                {
+                }, {
                     case: 'Profile Antoine',
                     user: "58550af40532ac18c8234986",
                     callback: {
