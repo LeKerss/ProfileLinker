@@ -3,7 +3,7 @@
  */
 'use strict';
 
-angular.module('eklabs.angularStarterPack.forms')
+angular.module('eklabs.angularStarterPack.ttc-linker')
     .directive('myProfileLinker', function($log, $http, $mdDialog, $q) {
         return {
             templateUrl: 'eklabs.angularStarterPack/modules/ttc-linker/directives/my-linker/linkerView.html',
