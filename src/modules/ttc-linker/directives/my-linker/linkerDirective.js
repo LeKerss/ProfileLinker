@@ -9,12 +9,10 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
             templateUrl: 'eklabs.angularStarterPack/modules/ttc-linker/directives/my-linker/linkerView.html',
             scope: {
                 user: '=',
-                callback: '=?'
+                callback: '=?',
             },
             link: function(scope) {
 
-                scope.User = new User();
-                scope.Users = new Users();
                 var userRoute = $config.get('api') + "/users";
                 scope.loading = false;
 
@@ -25,36 +23,32 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                     if (myUserId === undefined) {
                         resetUser();
                     } else {
-
-                        getUser(myUserId);
-
+                        setCurrentUser(myUserId);
                     }
 
                 });
 
 
-                function getUser(myUserId) {
-                    var deferred = $q.defer(); // objet en attente
-
-                    $q.when(deferred.promise, function() {
-                        scope.loading = false;
-                    });
-
-                    return findUser(myUserId).then(
-                        // si id de l'utilisateur trouvé
-                        function(result) {
-                            scope.userObject = result.data;
-                            // dans tous les cas
-                            getFriends().finally(function() {
-                                deferred.resolve();
-                            });
-                        },
-                        // si id de l'utilisateur non trouvé
-                        function(error) {
-                            $log.error("Erreur de récupération de l'utilisteur", error);
-                            resetUser();
-                            deferred.resolve();
-                        });
+                function setCurrentUser(myUserId) {
+                    User.prototype.get(myUserId)
+                        .then(
+                            function(result) {
+                                scope.userObject = result;
+                                getFriends()
+                                    .then(function(result) {
+                                            scope.userFriends = result;
+                                            // console.log(scope.userFriends);
+                                        },
+                                        function(error) {
+                                            scope.userFriends = [];
+                                        });
+                            },
+                            function(error) {
+                                console.log(error);
+                            }
+                        );
+                    scope.loading = false;
+                    scope.isLogged = true;
                 }
 
                 function resetUser() {
@@ -63,19 +57,10 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                     scope.userFriends = [];
                 }
 
-                // Fonction permettant de récupérer un utilisateur via son id
-                function findUser(id) {
-                    return $http.get(userRoute + id, {
-                        timeout: 5000
-                    });
-                    /*return scope.userList.find(function(user) {
-                      return user.id === id;
-                    });*/
-                }
-
                 function getFriends() {
-                    return(scope.User.getFriends());
-
+                    var defer = $q.defer();
+                    defer.resolve(scope.userObject.getFriends());
+                    return defer.promise;
                 }
 
 
@@ -102,22 +87,6 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                         scope.actions = default_actions;
                     }
                 });
-
-                scope.maListe = [{
-                        name: "Cécile Hu",
-                        photo: "",
-                        status: "1"
-                    }, {
-                        name: "Annas Saker",
-                        photo: "",
-                        status: "1"
-                    }, {
-                        name: "Ludo Babadjo",
-                        photo: "",
-                        status: "0"
-                    },
-
-                ];
 
                 scope.toggleAddFriends = function(ev) {
                     $mdDialog.show({
@@ -198,8 +167,7 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                 };
 
                 scope.havingRequests = function() {
-                    if(!scope.userObject) return false;
-
+                    if (!scope.userObject) return false;
                     return ((scope.userObject.requests instanceof Array) && (scope.userObject.requests.length > 0));
                 }
 
@@ -317,8 +285,7 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                                     function successCallback(response) {
                                         scope.updateRequests();
                                     },
-                                    function errorCallback(response) {
-                                    });
+                                    function errorCallback(response) {});
                             },
                             function errorCallback(response) {
                                 console.log(response);
