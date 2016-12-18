@@ -27,6 +27,9 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                 self = this;
 
             $http.get(uri).then(function(response){
+                var myList = response.data.filter(function(obj){
+                    return (obj instanceof Object);
+                })
                 self.addItems(response.data);
                 defer.resolve();
             },function(reason){

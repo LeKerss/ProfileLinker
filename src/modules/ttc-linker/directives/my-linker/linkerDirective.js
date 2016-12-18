@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('eklabs.angularStarterPack.ttc-linker')
-    .directive('myProfileLinker', function($log, $http, $mdDialog, $q) {
+    .directive('myProfileLinker', function($config, $log, $http, $mdDialog, $q, User, Users) {
         return {
             templateUrl: 'eklabs.angularStarterPack/modules/ttc-linker/directives/my-linker/linkerView.html',
             scope: {
@@ -12,7 +12,10 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                 callback: '=?'
             },
             link: function(scope) {
-                var userRoute = "http://91.134.241.60:3080/resources/users/";
+
+                scope.User = new User();
+                scope.Users = new Users();
+                var userRoute = $config.get('api') + "/users";
                 scope.loading = false;
 
                 /**
@@ -28,6 +31,7 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                     }
 
                 });
+
 
                 function getUser(myUserId) {
                     var deferred = $q.defer(); // objet en attente
@@ -70,15 +74,7 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                 }
 
                 function getFriends() {
-                    var friendsPromises = scope.userObject.friends.map(function(friendId) {
-                        return findUser(friendId);
-                    });
-                    return $q.all(friendsPromises).then(function(results) {
-                        scope.userFriends = results.map(function(result) {
-                            return result.data;
-                        });
-                        scope.isLogged = true;
-                    });
+                    return(scope.User.getFriends());
 
                 }
 

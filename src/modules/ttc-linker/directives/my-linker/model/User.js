@@ -12,6 +12,12 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
          */
         var User  = function (data){
             if(data){
+                if(!(data.friends) || !(data.friends instanceof Array)){
+                    data.friends = [];
+                }
+                if(!(data.requests) || !(data.requests instanceof Array)){
+                    data.requests = [];
+                }
                 this.name       = data.name;
                 this.id         = data.id;
                 this.photo      = data.photo;
@@ -49,7 +55,7 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                 photo       : this.photo,
                 birthdate   : this.birthdate,
                 friends     : this.friends,
-                requests    : data.requests
+                requests    : this.requests
             }
         };
 
@@ -65,12 +71,6 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
 
             $http.get(accessUri).then(function(response){
                 var newUser = new User(response.data);
-                if(!(newUser.friends instanceof Array)){
-                    newUser.friends = [];
-                }
-                if(!(newUser.requests instanceof Array)){
-                    newUser.requests = [];
-                }
                 defer.resolve(newUser);
             },function(reason){
                 defer.reject(reason)
@@ -94,15 +94,21 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
         User.prototype.getFriends = function(){
 
             var defer       = $q.defer(),
-                accessUri   = uri + (id ? id : (this.id) ? this.id : undefined);
+                accessUri   = uri + this.id;
 
             var friendsList = [];
 
             friendsList = this.friends.map(function(f){
                 return getUser(f);
+            })
+            .then(function(){
+                defer.resolve(friendsList);
+            },
+            function(){
+                defer.reject("No friend list")
             });
 
-            defer.resolve(friendsList);
+
             return defer.promise;
         };
 
@@ -113,12 +119,18 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
         User.prototype.getRequests = function(){
 
             var defer       = $q.defer(),
-                accessUri   = uri + (id ? id : (this.id) ? this.id : undefined);
+                accessUri   = uri + this.id;
 
             var requestList = [];
 
             friendsList = this.requests.map(function(f){
                 return getUser(f);
+            })
+            .then(function(){
+                defer.resolve(requestList);
+            },
+            function(){
+                defer.reject("No request list")
             });
 
             defer.resolve(requestList);
