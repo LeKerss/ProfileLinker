@@ -34,14 +34,7 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                         .then(
                             function(result) {
                                 scope.userObject = result;
-                                getFriends()
-                                    .then(function(result) {
-                                            scope.userFriends = result;
-                                            // console.log(scope.userFriends);
-                                        },
-                                        function(error) {
-                                            scope.userFriends = [];
-                                        });
+                                updateFriends();
                             },
                             function(error) {
                                 console.log(error);
@@ -61,6 +54,17 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                     var defer = $q.defer();
                     defer.resolve(scope.userObject.getFriends());
                     return defer.promise;
+                }
+
+                function updateFriends() {
+                    getFriends()
+                        .then(function(result) {
+                                scope.userFriends = result;
+                                // console.log(scope.userFriends);
+                            },
+                            function(error) {
+                                scope.userFriends = [];
+                            });
                 }
 
 
@@ -100,58 +104,41 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                                 myUser: scope.userObject
                             }
                         })
-                        .then(function(newFriend) {
-
-                        }, function() {
-
+                        .finally(function() {
+                            scope.updateFriends();
                         });
                 }
 
-                function AddFriendsDialogController(scope, $mdDialog, myUser) {
+                function AddFriendsDialogController(scope, $mdDialog, myUser, User, Users) {
 
                     scope.myUser = myUser;
 
-
                     scope.addFriend = function(person) {
-                        if (!person.requests) {
-                            person.requests = [];
-                        }
-                        if (person.requests.indexOf(myUser.id) == !-1) {
-                            return
-                        }
-                        var updatedPerson = person;
-                        updatedPerson.requests.push(myUser.id);
-
-                        $http({
-                            method: "PUT",
-                            url: userRoute + person.id,
-                            data: updatedPerson
-                        }).then(
-                            function successCallback(response) {
-                                person = updatedPerson;
-                                console.log("updated :", response)
+                        scope.myUser.sendRequest(person)
+                        .then(
+                            function(response) {
+                                person = response;
                             },
-                            function errorCallback(response) {
-                                console.log(response);
-                            });
-
+                            function(error) {
+                                console.log(error);
+                            }
+                        );
                     };
 
-                    scope.people = [];
+                    scope.updateFriends = function() {
+                        scope.people = [];
+                        var userlist = new Users();
+                        userlist.fetch()
+                            .then(function successCallback() {
+                                scope.people = userlist.items.filter(function(p) {
+                                    return ((p.id !== scope.myUser.id) && (scope.myUser.friends.indexOf(p.id) === -1));
+                                });
+                            }, function errorCallback(response) {
+                                console.log(response);
+                            });
+                    }
 
-                    $http({
-                        method: "GET",
-                        url: userRoute,
-                    }).then(function successCallback(response) {
-                        // console.log(response)
-                        scope.people = response.data;
-                        scope.people = scope.people.filter(function(p) {
-                            return ((typeof p == "object") && (p.id !== scope.myUser.id) && (scope.myUser.friends.indexOf(p.id) === -1));
-                        });
-
-                    }, function errorCallback(response) {
-                        console.log(response);
-                    });
+                    scope.updateFriends();
 
                     scope.hide = function() {
                         $mdDialog.hide();
@@ -164,7 +151,8 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                     scope.friendAdded = function(newFriend) {
                         $mdDialog.hide(newFriend);
                     };
-                };
+                }
+
 
                 scope.havingRequests = function() {
                     if (!scope.userObject) return false;
@@ -183,10 +171,8 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                                 myUser: scope.userObject
                             }
                         })
-                        .then(function(newFriend) {
-
-                        }, function() {
-
+                        .finally(function() {
+                            scope.updateFriends();
                         });
                 }
 
@@ -195,121 +181,36 @@ angular.module('eklabs.angularStarterPack.ttc-linker')
                     scope.myUser = myUser;
 
                     scope.declineRequest = function(person) {
-                        if (myUser.requests.indexOf(person.id) === -1) {
-                            return;
-                        }
+                        myUser.deleteRequest(person)
+                        .finally(
+                            function(){
+                                scope.updateRequests();
+                            }
+                        );
 
-                        myUser.requests = myUser.requests.filter(function(r) {
-                            return (r !== person.id)
-                        })
-
-                        var newRequests = myUser.requests;
-                        myUser.requests = null;
-
-                        $http({
-                            method: "PUT",
-                            url: userRoute + myUser.id,
-                            data: myUser
-                        }).then(
-                            function successCallback(response) {
-                                myUser.requests = newRequests;
-                                $http({
-                                    method: "PUT",
-                                    url: userRoute + myUser.id,
-                                    data: myUser
-                                }).then(
-                                    function successCallback(response) {
-                                        scope.updateRequests();
-                                        // console.log("updated1 :", response)
-                                    },
-                                    function errorCallback(response) {
-                                        console.log(response);
-                                    });
-                                // console.log("updated1 :", response)
-                            },
-                            function errorCallback(response) {
-                                console.log(response);
-                            });
                     }
                     scope.acceptRequest = function(person) {
-
-                        if (!person.friends) {
-                            person.friends = [];
-                        }
-                        if (!myUser.friends) {
-                            myUser.friends = [];
-                        }
-                        if ((person.friends.indexOf(myUser.id) == !-1) && (myUser.friends.indexOf(person.id) == !-1)) {
-                            return;
-                        }
-
-                        var updatedPerson = person;
-                        updatedPerson.friends.push(myUser.id);
-
-                        myUser.friends.push(updatedPerson.id);
-
-                        var newRequests = myUser.requests;
-
-                        newRequests = newRequests.filter(function(r) {
-                            return (r !== person.id);
-                        });
-
-                        myUser.requests = null;
-
-                        $http({
-                            method: "PUT",
-                            url: userRoute + person.id,
-                            data: updatedPerson
-                        }).then(
-                            function successCallback(response) {
-                                person = updatedPerson;
-                                console.log("updated1 :", response)
-                            },
-                            function errorCallback(response) {
-                                console.log(response);
-                            });
-
-                        $http({
-                            method: "PUT",
-                            url: userRoute + myUser.id,
-                            data: myUser
-                        }).then(
-                            function successCallback(response) {
-                                console.log("updated2:", response)
-                                myUser.requests = newRequests;
-                                $http({
-                                    method: "PUT",
-                                    url: userRoute + myUser.id,
-                                    data: myUser
-                                }).then(
-                                    function successCallback(response) {
-                                        scope.updateRequests();
-                                    },
-                                    function errorCallback(response) {});
-                            },
-                            function errorCallback(response) {
-                                console.log(response);
-                            });
-
+                        myUser.acceptRequest(person)
+                        .finally(
+                            function(){
+                                scope.updateRequests();
+                            }
+                        );
                     };
 
                     scope.updateRequests = function() {
                         scope.people = [];
+                        var userlist = new Users();
+                        userlist.fetch()
+                            .then(function successCallback() {
+                                scope.people = userlist.items.filter(function(p) {
+                                    return ((p.id !== scope.myUser.id) && (scope.myUser.requests.indexOf(p.id) !== -1));
+                                });
+                                console.log(scope.people);
 
-                        $http({
-                            method: "GET",
-                            url: userRoute,
-                        }).then(function successCallback(response) {
-                            // console.log(response)
-                            scope.people = response.data;
-                            scope.people = scope.people.filter(function(p) {
-                                return ((typeof p == "object") && (p.id !== scope.myUser.id) && (scope.myUser.requests.indexOf(p.id) !== -1));
+                            }, function errorCallback(response) {
+                                console.log(response);
                             });
-                            console.log(scope.people);
-
-                        }, function errorCallback(response) {
-                            console.log(response);
-                        });
                     }
 
                     scope.updateRequests();
